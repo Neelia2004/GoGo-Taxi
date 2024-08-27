@@ -7,6 +7,8 @@ import string
 import sys
 import customer_login_Ui
 
+join = sqlite3.connect('C:\\Users\\Aneelia Balraj\\Downloads\\taxi.db')
+pointer = join.cursor()
 
 class customer_registration_Ui(object):
 
@@ -20,85 +22,115 @@ class customer_registration_Ui(object):
     def closing(self):
         self.Word.close()
 
-    def CreateDBConnection(taxidb):
+    # def CreateDBConnection(taxidb):
+    #
+    #     # taxidb = None
+    #     nameOfFuction = 'Create_DB_Connection'
+    #
+    #     try:
+    #         taxidb = sqlite3.connect(taxidb)
+    #
+    #     except Error as em:
+    #         print(__name__, ':', nameOfFuction, ":", em)
+    #         raise
+    #
+    # def CloseDBConnection(taxidb):
+    #     nameOfFuction = 'Close_DB_Connection'
+    #
+    #     try:
+    #         taxidb.close()
+    #     except Error as em:
+    #         print(__name__, ':', nameOfFuction, ":", em)
+    #         raise
 
-        # taxidb = None
-        nameOfFuction = 'Create_DB_Connection'
+    def enter_registration_data(self):
+
+        # nameoffuction = 'Register Customer'
+        #
+        # newcustomer_list = []
 
         try:
-            taxidb = sqlite3.connect(taxidb)
 
-        except Error as em:
-            print(__name__, ':', nameOfFuction, ":", em)
-            raise
 
-    def CloseDBConnection(taxidb):
-        nameOfFuction = 'Close_DB_Connection'
+            pointer.execute(
+            "INSERT INTO Customer (CustomerID, Password, FirstName, LastName, Address,  Email, ContactNumber, PaymentMethod, Ccnumber ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    (
+                    self.username_information.text(),
+                    self.password_information.text(),
+                    self.f_name_information.text(),
+                    self.l_name_information.text(),
+                    self.address_information.text(),
+                    self.email_information.text(),
+                    self.phoneno_information.text(),
+                    self.payment_information.text(),
+                    self.payment_information2.text()
+                )
+            )
 
-        try:
-            taxidb.close()
-        except Error as em:
-            print(__name__, ':', nameOfFuction, ":", em)
-            raise
-
-    def enter_registration_data(self,username_information, password_information, f_name_information, l_name_information, address_information, email_information, phoneno_information, payment_information, payment_information2):
-
-        nameoffuction = 'Register Customer'
-
-        newcustomer_list = []
-
-        try:
-            join = sqlite3.connect('C:\\Users\\Aneelia Balraj\\Downloads\\taxi.db')
-            pointer = join.cursor()
-
-            pointer.execute('INSERT INTO Customer (CustomerID, Password, FirstName, LastName, Address,  Email, ContactNumber, PaymentMethod) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                        (username_information, password_information, f_name_information, l_name_information, address_information, email_information, phoneno_information, payment_information, payment_information2))
-
-            customer_rows = pointer.fetchall()
+        #     customer_rows = pointer.fetchall()
             join.commit()
-
-            for customer in customer_rows:
-                username_information = customer[0]
-                password_information = customer[1]
-                f_name_information = customer[2]
-                l_name_information = customer[3]
-                address_information = customer[4]
-                email_information = customer[5]
-                phoneno_information = customer[6]
-                payment_information = customer[7]
-                payment_information2 = customer[8]
-
-                newcustomer = customer(username_information,password_information, f_name_information, l_name_information, address_information, email_information, phoneno_information, payment_information, payment_information2)
-
-                newcustomer_list.append(newcustomer)
-
-                customer_registration_Ui.CloseDBConnection(join)
-
-                return newcustomer_list
-
-        except Error as em:
-
-            print(__name__, ':', nameoffuction, ':', em)
+            self.successful_register_message()
+        except sqlite3.Error as em:
+            QMessageBox.critical(self.Word, "DB insertion error", f"Unable to insert data: {em}")
             raise
+        #
+        #     for customer in customer_rows:
+        #         username_information = customer[0]
+        #         password_information = customer[1]
+        #         f_name_information = customer[2]
+        #         l_name_information = customer[3]
+        #         address_information = customer[4]
+        #         email_information = customer[5]
+        #         phoneno_information = customer[6]
+        #         payment_information = customer[7]
+        #         payment_information2 = customer[8]
+        #
+        #         newcustomer = customer(username_information,password_information, f_name_information, l_name_information, address_information, email_information, phoneno_information, payment_information, payment_information2)
+        #
+        #         newcustomer_list.append(newcustomer)
+        #
+        #         customer_registration_Ui.CloseDBConnection(join)
+        #
+        #         return newcustomer_list
+        #
+        # except Error as em:
+        #
+        #     print(__name__, ':', nameoffuction, ':', em)
+        #     raise
 
 
 
 
     def submit_button_clicked(self):
-        username_information = self.username_information.text()
-        password_information = self.password_information.text()
-        f_name_information = self.f_name_information.text()
-        l_name_information = self.l_name_information.text()
-        address_information = self.address_information.text()
-        email_information = self.email_information.text()
-        phoneno_information = self.phoneno_information.text()
-        payment_information = self.payment_information.text()
-        payment_information2 = self.payment_information2.text()
 
-        self.enter_registration_data(username_information, password_information, f_name_information, l_name_information,
-                                     address_information, email_information, phoneno_information, payment_information,
-                                     payment_information2)
-        self.clear_information()
+        # username_information = self.username_information.text()
+        # password_information = self.password_information.text()
+        # f_name_information = self.f_name_information.text()
+        # l_name_information = self.l_name_information.text()
+        # address_information = self.address_information.text()
+        # email_information = self.email_information.text()
+        # phoneno_information = self.phoneno_information.text()
+        # payment_information = self.payment_information.text()
+        # payment_information2 = self.payment_information2.text()
+        #
+        # self.enter_registration_data(username_information, password_information, f_name_information, l_name_information,
+        #                              address_information, email_information, phoneno_information, payment_information,
+        #                              payment_information2)
+        # self.clear_information()
+            self.enter_registration_data()
+            join.commit()
+            # self.successful_register_message()
+
+            # conn.close()
+            self.clear_information()
+
+
+        # except sqlite3.Error as em:
+        #     QMessageBox.critical(self.Word, "DB insertion error", f"Unable to insert data: {em}")
+
+
+    def successful_register_message(self):
+        QMessageBox.information(self.Word, 'Booking', "Successfully Registered", QMessageBox.StandardButton.Ok)
 
     def clear_information(self):
         self.username_information.clear()
@@ -109,8 +141,7 @@ class customer_registration_Ui(object):
         self.email_information.clear()
         self.phoneno_information.clear()
         self.payment_information.clear()
-
-
+        self.payment_information2.clear()
 
 
     def back_button_clicked(self):

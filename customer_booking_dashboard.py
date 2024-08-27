@@ -9,10 +9,8 @@ import customer_login_Ui
 join = sqlite3.connect('C:\\Users\\Aneelia Balraj\\Downloads\\taxi.db')
 pointer = join.cursor()
 
-class cutomer_booking_dashboard_Ui(QtWidgets.QWidget):
+class cutomer_booking_dashboard_Ui(object):
     def __init__(self, Word):
-        super().__init__(self)
-
         self.Word = QtWidgets.QDialog()
 
         self.start_customer_dashboard(self.Word)
@@ -24,23 +22,31 @@ class cutomer_booking_dashboard_Ui(QtWidgets.QWidget):
         self.Word.close()
 
     def enter_booking_data(self):
-        SQL = "INSERT INTO Booking( BookingID, Date, PickupTime, PickupAddress, DropAddress, Paid, Status) VALUES (?, ?, ?, ?, ?, ?, ?)"
-        VALUES = ("21H4", #self.travel_Id.text(),
-                  "21/32/2024", #self.pickup_date_information.text(),
-                   "10:00", #self.Time_of_pickup_information.text(),
-                    "32 st", #self.Address_of_pickup_information.text(),
-                   "32",#self.Address_of_dropoff_information.text(),
-                    "Credit", #self.payment_information.text(),
-                   "Completed") #self.status_information.text())
-        join.execute(SQL, VALUES)
+        pointer = join.cursor()
 
-        # print(self.travel_Id.text(), self.pickup_date_information())
+        join.execute("INSERT INTO Booking VALUES(BookingID, Date, PickupTime, PickupAddress, DropAddress, Paid, Status)",
+                     {'BookingID':self.travel_Id.text(), 'Date':self.pickup_date_information.text(), 'PickupTime':self.Time_of_pickup_information.text(), 'PickupAddress':self.Address_of_pickup_information.text(), 'DropAddress':self.Address_of_dropoff_information.text(), 'Paid':self.payment_information.text(), 'Status':self.status_information.text()})
+
+            # pointer.execute(SQL, (
+            #     self.travel_Id.text(),
+            #     self.pickup_date_information.text(),
+            #     self.Time_of_pickup_information.text(),
+            #     self.Address_of_pickup_information.text(),
+            #     self.Address_of_dropoff_information.text(),
+            #     self.payment_information.text(),
+            #     self.status_information.text()
+            # ))
+            #
+            # join.commit()
+
+
+            # print(self.travel_Id.text(), self.pickup_date_information())
 
     def add_button_clicked(self):
-        self.enter_booking_data()
-        join.commit()
-        self.clear_information()
-        join.close()
+            self.enter_booking_data()
+            join.commit()
+            # join.close()
+            self.clear_information()
 
 
         # join.commit()
@@ -65,24 +71,22 @@ class cutomer_booking_dashboard_Ui(QtWidgets.QWidget):
         self.Address_of_dropoff_information.clear()
         self.payment_information.clear()
         self.status_information.clear()
-        self.updated__confirmation_message()
+        self.updated_confirmation_message()
 
     def clear_text(self):
         self.search_travel_id_text.clear()
 
     def booked_confirmation_message(self):
-        QMessageBox.question(self.Word, 'Booking', "Booked Successfully!!",QMessageBox.Yes | QMessageBox.Yes)
+        QMessageBox.information(self.Word, 'Booking', "Booked Successfully!!", QMessageBox.Ok)
 
-    def updated__confirmation_message(self):
-        QMessageBox.question(self.Word, 'Booking', "Updated Successfully",QMessageBox.Yes | QMessageBox.Yes)
+    def updated_confirmation_message(self):
+        QMessageBox.information(self.Word, 'Booking', "Updated Successfully", QMessageBox.Ok)
 
     def obtain_booking_information(self):
         join.execute("SELECT * FROM Booking WHERE BookingID =:BookingID",
                   {'BookingID': self.search_travel_id_text.text()})
 
-        cursor = join.cursor()
-        cursor.execute("PRAGMA table_info(Booking);")
-        print(cursor.fetchall())
+        return join.fetchall()
 
     def search_button_clicked(self):
         pass
@@ -102,28 +106,28 @@ class cutomer_booking_dashboard_Ui(QtWidgets.QWidget):
         self.status_information.setText((give_it[0][6]))
         self.clear_text()
 
-    # def deletebooking(self):
-    #     join.execute("DELETE FROM Booking WHERE BookingID =:BookingID",{'BookingID': self.travel_Id.text()})
+    def deletebooking(self):
+        join.execute("DELETE FROM Booking WHERE BookingID =:BookingID",{'BookingID': self.travel_Id.text()})
 
-    # def clear_deleted_information(self):
-    #     self.travel_Id.clear()
-    #     self.pickup_date_information.clear()
-    #     self.Time_of_pickup_information.clear()
-    #     self.Address_of_pickup_information.clear()
-    #     self.Address_of_dropoff_information.clear()
-    #     self.Address_of_dropoff_information.clear()
-    #     self.status_information.clear()
-    #     self.delete_information()
+    def clear_deleted_information(self):
+        self.travel_Id.clear()
+        self.pickup_date_information.clear()
+        self.Time_of_pickup_information.clear()
+        self.Address_of_pickup_information.clear()
+        self.Address_of_dropoff_information.clear()
+        self.Address_of_dropoff_information.clear()
+        self.status_information.clear()
+        self.delete_information()
 
-    # def delete_information(self):
-    #     QMessageBox.question(self.Word, 'Booking', "Deleted Successfully!!", QMessageBox.Yes | QMessageBox.Yes)
-    #
-    # def delete_button_clicked(self):
-    #     self.deletebooking()
-    #
-    #     join.commit()
-    #     # join.close()
-    #     self.clear_deleted_information()
+    def delete_information(self):
+        QMessageBox.question(self.Word, 'Booking', "Deleted Successfully!!", QMessageBox.Yes)
+
+    def delete_button_clicked(self):
+        self.deletebooking()
+
+        join.commit()
+        # join.close()
+        self.clear_deleted_information()
 
 
     def update_booking(self):
@@ -204,8 +208,7 @@ class cutomer_booking_dashboard_Ui(QtWidgets.QWidget):
 
 
         #add button
-        self.add_button = QtWidgets.QPushButton(mainPage)
-        self.add_button.clicked.connect(self.add_button_clicked())
+        self.add_button = QtWidgets.QPushButton(mainPage, clicked=lambda: self.add_button_clicked())
         self.add_button.setGeometry(QtCore.QRect(290, 400, 100, 30))
         fontstyle = QtGui.QFont()
         fontstyle.setFamily("MS Shell Dlg 2")
@@ -384,22 +387,22 @@ class cutomer_booking_dashboard_Ui(QtWidgets.QWidget):
         self.search_travel_id_text.setObjectName("search_travel_id_text")
 
         # D Button
-        # self.delete_button = QtWidgets.QPushButton(mainPage, clicked=lambda:self.delete_button_clicked())
-        # self.delete_button.setGeometry(QtCore.QRect(290, 470, 100, 30))
-        # fontstyle = QtGui.QFont()
-        # fontstyle.setFamily("MS Shell Dlg 2")
-        # fontstyle.setPointSize(16)
-        # fontstyle.setBold(False)
-        # fontstyle.setItalic(False)
-        # fontstyle.setWeight(9)
-        # self.delete_button.setFont(fontstyle)
-        # self.delete_button.setStyleSheet("border-radius: 65px;\n"
-        #                               "font: 75 16pt \"MS Shell Dlg 2\";\n"
-        #                               "border: 2px solid #73AD21;\n"
-        #                               "background-color: rgb(242, 237, 215);\n"
-        #                               "color: rgb(0, 0, 0);\n"
-        #                               "border-color: rgb(4, 4, 4);")
-        # self.delete_button.setObjectName("delete_button")
+        self.delete_button = QtWidgets.QPushButton(mainPage, clicked=lambda:self.delete_button_clicked())
+        self.delete_button.setGeometry(QtCore.QRect(290, 470, 100, 30))
+        fontstyle = QtGui.QFont()
+        fontstyle.setFamily("MS Shell Dlg 2")
+        fontstyle.setPointSize(16)
+        fontstyle.setBold(False)
+        fontstyle.setItalic(False)
+        fontstyle.setWeight(9)
+        self.delete_button.setFont(fontstyle)
+        self.delete_button.setStyleSheet("border-radius: 65px;\n"
+                                      "font: 75 16pt \"MS Shell Dlg 2\";\n"
+                                      "border: 2px solid #73AD21;\n"
+                                      "background-color: rgb(242, 237, 215);\n"
+                                      "color: rgb(0, 0, 0);\n"
+                                      "border-color: rgb(4, 4, 4);")
+        self.delete_button.setObjectName("delete_button")
 
 
 
@@ -463,7 +466,7 @@ class cutomer_booking_dashboard_Ui(QtWidgets.QWidget):
         self.generate_travel_id_button.setText(update("mainPage", "Get Travel ID"))
         self.search_button.setText(update("mainPage", "Search"))
         self.trip_id_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:550; color:#ffffff;\">T ID</span></p></body></html>"))
-        # self.delete_button.setText(update("mainPage", "Delete"))
+        self.delete_button.setText(update("mainPage", "Delete"))
         self.update_button.setText(update("mainPage", "Update"))
         self.pay_dropdown_box.setItemText(0, update("mainPage", "Credit"))
         self.pay_dropdown_box.setItemText(1, update("mainPage", "Debit"))
