@@ -1,27 +1,17 @@
 import sqlite3
-import sys
+from PyQt6.QtWidgets import QMessageBox
 from PyQt6 import QtCore, QtGui, QtWidgets
+import sys
 import driver_loginUi
-import UI
 
-
-
-join = sqlite3.connect('Yellow_Express.db') # Creates the actual database
-sql = join.cursor() # Takes data to and from database
-sql.execute(""" CREATE TABLE if not exists Booking(
-trip_iD text ,
-pick_up_date text,
-pick_up_time text,
-pick_up_address text,
-drop_off_address text,
-pay_method text,
-status text
-)""")
+join = sqlite3.connect('C:\\Users\\Aneelia Balraj\\Downloads\\taxi.db')
+pointer = join.cursor()
 
 class driver_dashboard_Ui(object):
 
     def __init__(self, Word):
-        self.Word = QtWidgets.QDialog()
+        super().__init__()
+        self.Word = Word
         self.start_driver_dashboard(self.Word)
 
 
@@ -32,46 +22,91 @@ class driver_dashboard_Ui(object):
         self.Word.close()
 
     def obtain_booking_information(self):
-        sql.execute("SELECT * FROM Booking WHERE trip_id =:trip_id",
-                  {'trip_id': self.travel_ID_information.text()})
-        return sql.fetchall()
+        try:
+            pointer.execute(
+            'SELECT TravelID, PickupDate, PickupTime, PickupAddress, DropAddress, Status, PaymentInformation FROM Booking WHERE TravelID = ?',
+            (self.search_travel_id_information.text(),))
+
+            return pointer.fetchall()
+        except sqlite3.Error as em:
+            QMessageBox.critical(self.Word, "DB insertion error", f"Unable to insert data: {em}")
+            return []
+
+
+    def clear_text(self):
+        self.search_travel_id_information.clear()
 
     def search_button_clicked(self):
-        if self.travel_ID_information.text() in self.obtain_booking_information().__str__():
-            self.enter_information()
+        # pass
+        # if self.search_travel_id_text.text() in self.obtain_booking_information().__str__():
+        #     self.enter_text()
+        booking_details = self.obtain_booking_information()
+        # print(booking_details)
+        if booking_details:
+            self.enter_text(booking_details)
 
-    def enter_information(self):
-            insert = self.obtain_booking_information()
-            print(insert[0][0])
-            self.travel_Id.setText((insert[0][0]))
-            self.Date_of_pickup_information.setText((insert[0][1]))
-            self.Time_of_pickup_information.setText((insert[0][2]))
-            self.Address_of_pickup_information.setText((insert[0][3]))
-            self.Address_of_dropoff_information.setText((insert[0][4]))
-            self.payment_information.setText((insert[0][5]))
-            self.status_information.setText((insert[0][6]))
+        else:
+            QMessageBox.warning(self, "Search", "No booking with the respective Travel ID was found", QMessageBox.StandardButton.Ok)
+            self.clear_text()
 
-    def update_booking_information(self):
-        sql.execute(""" UPDATE Booking SET trip_id = :trip_id, pick_up_date = :pick_up_date, pick_up_time =:pick_up_time,pick_up_address =:pick_up_address, drop_off_address =:drop_off_address,
-    pay_method =:pay_method,
-    status =:status WHERE
-    travel_Id =:trip_id""",
-    {'trip_id': self.travel_Id.text(), 'pick_up_date': self.Date_of_pickup.text(),'pick_up_time': self.Time_of_pickup_information.text(),'pick_up_address': self.Address_of_pickup_information.text(), 'drop_off_address':self.Address_of_dropoff_information.text(),'pay_method': self.payment_information.text(),'status': self.status_information.text()})
+    def enter_text(self, booking_details):
+        if booking_details:
+            Binformation = booking_details[0]
+            self.travel_Id.setText(Binformation[0])
+            self.Date_of_pickup.setText(Binformation[1])
+            self.Time_of_pickup_information.setText(Binformation[2])
+            self.Address_of_pickup_information.setText(Binformation[3])
+            self.Address_of_dropoff_information.setText(Binformation[4])
+            self.status_information.setText(Binformation[5])
+            self.payment_information.setText(Binformation[6])
 
-    def update_button_clicked(self):
-        self.update_booking_information()
-        join.commit()
-        # join.close()
-        # self.clearupdate_Txt()
+
+    def update_booking(self):
+
+        try:
+
+            pointer.execute(
+                'UPDATE Booking SET Status = ? WHERE TravelID = ?',
+
+                (
+                    self.status_information.text(),
+                    self.search_travel_id_information.text()
+                )
+            )
+
+            join.commit()
+            self.updated_confirmation_message()
+
+        except sqlite3.Error as em:
+            QMessageBox.critical(self, "DB insertion error", f"Unable to insert data: {em}")
+            print(f"Error: {em}")
+
+    def updated_confirmation_message(self):
+        QMessageBox.information(self.Word, 'Booking', "Updated Successfully", QMessageBox.StandardButton.Ok)
+
+    def updateBooking_button_clicked(self):
+        self.update_booking()
+        self.clear_updated_information()
+
+    def clear_updated_information(self):
+        self.search_travel_id_information.clear()
+        self.travel_Id.clear()
+        self.Date_of_pickup.clear()
+        self.Time_of_pickup_information.clear()
+        self.Address_of_pickup_information.clear()
+        self.Address_of_dropoff_information.clear()
+        self.status_information.clear()
+        self.payment_information.clear()
+
 
     def back_button_clicked(self):
+        self.closing()
         self.word = QtWidgets.QDialog()
         previous_screen = driver_loginUi.Driver_Login_Ui(QtWidgets.QDialog())
         previous_screen.showing()
-        self.closing()
 
     def combobox_selected(self):
-        word2 = self.combobox_status_changed().currentText()
+        word2 = self.status_dropdown_box().currentText()
 
         self.status_information.setText(word2)
         # self.status_cBox.count()
@@ -244,20 +279,20 @@ class driver_dashboard_Ui(object):
                                            "color: rgb(255, 255, 255);")
         self.travel_id_label2.setObjectName("travel_id_label")
 
-        self.search_trip_id_information = QtWidgets.QLineEdit(mainPage)
-        self.search_trip_id_information.setGeometry(QtCore.QRect(30, 120, 91, 31))
-        self.search_trip_id_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
+        self.search_travel_id_information = QtWidgets.QLineEdit(mainPage)
+        self.search_travel_id_information.setGeometry(QtCore.QRect(30, 120, 91, 31))
+        self.search_travel_id_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
         "color: rgb(56, 56, 56);\n"
         "background-color: rgb(242, 237, 215);\n"
         "\n"
         "\n"
         "\n"
         "")
-        self.search_trip_id_information.setObjectName("search_trip_id_information")
-        self.search_trip_id_information.setEnabled(True)
+        self.search_travel_id_information.setObjectName("search_trip_id_information")
+        self.search_travel_id_information.setEnabled(True)
 
         # Update Button
-        self.update_button = QtWidgets.QPushButton(mainPage, clicked=lambda:self.update_button_clicked())
+        self.update_button = QtWidgets.QPushButton(mainPage, clicked=lambda:self.updateBooking_button_clicked())
         self.update_button.setGeometry(QtCore.QRect(160, 390, 100, 30))
         fontstyle = QtGui.QFont()
         fontstyle.setFamily("MS Shell Dlg 2")

@@ -10,11 +10,13 @@ import customer_login_Ui
 join = sqlite3.connect('C:\\Users\\Aneelia Balraj\\Downloads\\taxi.db')
 pointer = join.cursor()
 
-class customer_registration_Ui(object):
+class customer_registration_Ui(QtWidgets.QDialog):
 
     def __init__(self, Word):
-        self.Word = QtWidgets.QDialog()
+        super().__init__()
+        self.Word = Word
         self.start_customer_dashboard(self.Word)
+
 
     def showing(self):
         self.Word.show()
@@ -22,32 +24,7 @@ class customer_registration_Ui(object):
     def closing(self):
         self.Word.close()
 
-    # def CreateDBConnection(taxidb):
-    #
-    #     # taxidb = None
-    #     nameOfFuction = 'Create_DB_Connection'
-    #
-    #     try:
-    #         taxidb = sqlite3.connect(taxidb)
-    #
-    #     except Error as em:
-    #         print(__name__, ':', nameOfFuction, ":", em)
-    #         raise
-    #
-    # def CloseDBConnection(taxidb):
-    #     nameOfFuction = 'Close_DB_Connection'
-    #
-    #     try:
-    #         taxidb.close()
-    #     except Error as em:
-    #         print(__name__, ':', nameOfFuction, ":", em)
-    #         raise
-
     def enter_registration_data(self):
-
-        # nameoffuction = 'Register Customer'
-        #
-        # newcustomer_list = []
 
         try:
 
@@ -67,70 +44,20 @@ class customer_registration_Ui(object):
                 )
             )
 
-        #     customer_rows = pointer.fetchall()
             join.commit()
             self.successful_register_message()
         except sqlite3.Error as em:
-            QMessageBox.critical(self.Word, "DB insertion error", f"Unable to insert data: {em}")
-            raise
-        #
-        #     for customer in customer_rows:
-        #         username_information = customer[0]
-        #         password_information = customer[1]
-        #         f_name_information = customer[2]
-        #         l_name_information = customer[3]
-        #         address_information = customer[4]
-        #         email_information = customer[5]
-        #         phoneno_information = customer[6]
-        #         payment_information = customer[7]
-        #         payment_information2 = customer[8]
-        #
-        #         newcustomer = customer(username_information,password_information, f_name_information, l_name_information, address_information, email_information, phoneno_information, payment_information, payment_information2)
-        #
-        #         newcustomer_list.append(newcustomer)
-        #
-        #         customer_registration_Ui.CloseDBConnection(join)
-        #
-        #         return newcustomer_list
-        #
-        # except Error as em:
-        #
-        #     print(__name__, ':', nameoffuction, ':', em)
-        #     raise
-
-
+            QMessageBox.critical(self, "DB insertion error", f"Unable to insert data: {em}")
+            # raise
 
 
     def submit_button_clicked(self):
 
-        # username_information = self.username_information.text()
-        # password_information = self.password_information.text()
-        # f_name_information = self.f_name_information.text()
-        # l_name_information = self.l_name_information.text()
-        # address_information = self.address_information.text()
-        # email_information = self.email_information.text()
-        # phoneno_information = self.phoneno_information.text()
-        # payment_information = self.payment_information.text()
-        # payment_information2 = self.payment_information2.text()
-        #
-        # self.enter_registration_data(username_information, password_information, f_name_information, l_name_information,
-        #                              address_information, email_information, phoneno_information, payment_information,
-        #                              payment_information2)
-        # self.clear_information()
             self.enter_registration_data()
-            join.commit()
-            # self.successful_register_message()
-
-            # conn.close()
             self.clear_information()
 
-
-        # except sqlite3.Error as em:
-        #     QMessageBox.critical(self.Word, "DB insertion error", f"Unable to insert data: {em}")
-
-
     def successful_register_message(self):
-        QMessageBox.information(self.Word, 'Booking', "Successfully Registered", QMessageBox.StandardButton.Ok)
+        QMessageBox.information(self, 'Registration', "Successfully Registered", QMessageBox.StandardButton.Ok)
 
     def clear_information(self):
         self.username_information.clear()
@@ -145,10 +72,10 @@ class customer_registration_Ui(object):
 
 
     def back_button_clicked(self):
+        self.closing()
         self.word = QtWidgets.QDialog()
         previous_screen = customer_login_Ui.Customer_Login_Ui(QtWidgets.QDialog())
         previous_screen.showing()
-        self.closing()
 
     def selecting_combobox(self):
         data = self.pay_dropdown_box.currentText()
@@ -156,9 +83,8 @@ class customer_registration_Ui(object):
         self.payment_information.setText(data)
         # self.status_box.count()
 
-
     def start_customer_dashboard(self, mainPage):
-        mainPage.setObjectName("mainFrame")
+        mainPage.setObjectName("mainPage")
 
         mainPage.resize(400, 520)
         self.styling = QtWidgets.QGraphicsView(mainPage)
@@ -247,7 +173,6 @@ class customer_registration_Ui(object):
                                                 "\n""\n""\n")
         self.username_information.setObjectName("username_information")
 
-
         self.f_name_label = QtWidgets.QLabel(mainPage)
         self.f_name_label.setGeometry(QtCore.QRect(30, 175, 200, 30))
         self.f_name_label.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
@@ -333,8 +258,6 @@ class customer_registration_Ui(object):
                                                 "\n""\n""\n")
         self.payment_information2.setObjectName("payment_information2")
 
-
-
         self.pay_dropdown_box = QtWidgets.QComboBox(mainPage)
         self.pay_dropdown_box.setGeometry(QtCore.QRect(30, 332, 91, 20))
         self.pay_dropdown_box.setObjectName("pay_dropdown_box")
@@ -344,8 +267,6 @@ class customer_registration_Ui(object):
         self.pay_dropdown_box.activated.connect(self.selecting_combobox)
         self.update_text(mainPage)
         QtCore.QMetaObject.connectSlotsByName(mainPage)
-
-
 
     def update_text(self, mainPage):
         update = QtCore.QCoreApplication.translate

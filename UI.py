@@ -6,9 +6,9 @@ import administration_login
 import driver_loginUi
 
 class Taxi_Main_Page_Ui(object):
-    # calling the screen
     def __init__(self, Word):
-        self.Word = QtWidgets.QDialog()
+        super().__init__()
+        self.Word = Word
         self.begin_Ui_creation(self.Word)
 
 # creating constructors to open and close screen

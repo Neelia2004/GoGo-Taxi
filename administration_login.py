@@ -9,10 +9,9 @@ import admin_dashboard
 connection = sqlite3.connect('C:\\Users\\Aneelia Balraj\\Downloads\\taxi.db')
 pointer = connection.cursor()
 class admin_login_window(object):
-
-
     def __init__(self, Word):
-        self.Word = QtWidgets.QDialog()
+        super().__init__()
+        self.Word = Word
         self.start_administration_login(self.Word)
 
     def showing(self):

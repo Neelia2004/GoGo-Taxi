@@ -11,8 +11,8 @@ pointer = join.cursor()
 
 class administration_dashboard(object):
     def __init__(self, Word):
-        self.Word = QtWidgets.QDialog()
-
+        super().__init__()
+        self.Word = Word
         self.start_admin_dashboard(self.Word)
 
     def showing(self):

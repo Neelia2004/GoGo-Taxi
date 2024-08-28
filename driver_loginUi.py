@@ -5,21 +5,13 @@ import sys
 import UI
 import driver_dashboard
 
-
-# join = sqlite3.connect('Yellow_Express.db')
-# pointer = connect.cursor()
-# pointer.execute(""" CREATE TABLE if not exists Drivers(
-# username text ,
-# password text
-# )""")
-
 connection = sqlite3.connect('C:\\Users\\Aneelia Balraj\\Downloads\\taxi.db')
 pointer = connection.cursor()
 
 class Driver_Login_Ui(object):
     def __init__(self, Word):
-        self.Word = QtWidgets.QDialog()
-
+        super().__init__()
+        self.Word = Word
         self.start_Ui_driver_login(self.Word)
 
     def showing(self):

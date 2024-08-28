@@ -13,8 +13,8 @@ pointer = connection.cursor()
 
 class Customer_Login_Ui(object):
     def __init__(self, Word):
-        self.Word = QtWidgets.QDialog()
-
+        super().__init__()
+        self.Word = Word
         self.start_Ui_customer_login(self.Word)
 
     def showing(self):
@@ -196,5 +196,3 @@ if __name__ == "__main__":
     ui = Customer_Login_Ui(mainPage)
     ui.showing()
     sys.exit(app.exec())
-
-
