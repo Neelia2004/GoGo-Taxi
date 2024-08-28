@@ -22,19 +22,35 @@ class administration_dashboard(object):
         self.Word.close()
 
     def enter_booking_data(self):
-        join.execute("INSERT INTO Booking VALUES( :BookingID,:Date, "
-                     ":PickupTime, :PickupAddress, :DropAddress, :Paid, :Status)",
-                     {'BookingID': self.travel_Id.text(), 'Date': self.pickup_date_information.text(),
-                      'PickupTime': self.Time_of_pickup_information.text(),
-                      'PickupAddress': self.Address_of_pickup_information.text(), 'DropAddress':
-                          self.Address_of_dropoff_information.text(), 'Paid': self.payment_information.text(),
-                      'Status': self.status_information.text()})
+
+        try:
+
+            pointer.execute(
+                "INSERT INTO Booking (TravelID, PickupDate, PickupTime, PickupAddress, DropAddress, PaymentInformation, Status) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (
+                    self.travel_Id.text(),
+                    self.pickup_date_information.text(),
+                    self.Time_of_pickup_information.text(),
+                    self.Address_of_pickup_information.text(),
+                    self.Address_of_dropoff_information.text(),
+                    self.payment_information.text(),
+                    self.status_information.text()
+                )
+            )
+
+            join.commit()
+            self.booked_confirmation_message()
+        except sqlite3.Error as em:
+            QMessageBox.critical(self.Word, "DB insertion error", f"Unable to insert data: {em}")
+
+            # print(self.travel_Id.text(), self.pickup_date_information())
 
     def add_button_clicked(self):
         self.enter_booking_data()
-        join.commit()
         self.clear_information()
-        join.close()
+
+    def booked_confirmation_message(self):
+        QMessageBox.information(self, 'Booking', "Booked Successfully!!", QMessageBox.StandardButton.Ok)
 
     def clear_information(self):
         self.travel_Id.clear()
@@ -44,9 +60,69 @@ class administration_dashboard(object):
         self.Address_of_dropoff_information.clear()
         self.payment_information.clear()
         self.status_information.clear()
-        self.booked_confirmation_message()
 
-    def clear_updated_information(self):
+    def clear_text(self):
+        self.search_travel_id_text.clear()
+
+    def obtain_booking_information(self):
+
+        # try:
+        pointer.execute(
+            'SELECT TravelID, PickupDate, PickupTime, PickupAddress, DropAddress, PaymentInformation, Status FROM Booking WHERE TravelID = ?',
+            (self.search_travel_id_text.text(),))
+
+        return pointer.fetchall()
+        # except sqlite3.Error as em:
+        #     QMessageBox.critical(self.Word, "DB insertion error", f"Unable to insert data: {em}")
+        #     return []
+
+    def search_button_clicked(self):
+        # pass
+        # if self.search_travel_id_text.text() in self.obtain_booking_information().__str__():
+        #     self.enter_text()
+        booking_details = self.obtain_booking_information()
+        # print(booking_details)
+        if booking_details:
+            self.enter_text(booking_details)
+
+        else:
+            QMessageBox.warning(self, "Search", "No booking with the respective Travel ID was found",QMessageBox.StandardButton.Ok)
+            self.clear_text()
+
+    def enter_text(self, booking_details):
+        if booking_details:
+            Binformation = booking_details[0]
+            self.travel_Id.setText(Binformation[0])
+            self.pickup_date_information.setText(Binformation[1])
+            self.Time_of_pickup_information.setText(Binformation[2])
+            self.Address_of_pickup_information.setText(Binformation[3])
+            self.Address_of_dropoff_information.setText(Binformation[4])
+            self.payment_information.setText(Binformation[5])
+            self.status_information.setText(Binformation[6])
+            # self.clear_text()
+
+    def deleteBooking(self):
+
+        # try:
+        pointer.execute('DELETE FROM Booking WHERE TravelID = ?',
+                        (self.search_travel_id_text.text(),))
+
+        join.commit()
+        self.delete_information()
+        # return pointer.fetchall()
+        # except sqlite3.Error as em:
+        #     QMessageBox.critical(self.Word, "DB insertion error", f"Unable to insert data: {em}")
+        # raise
+
+    def delete_information(self):
+        QMessageBox.information(self.Word, 'Booking', "Deleted Successfully!!", QMessageBox.StandardButton.Ok)
+
+    def delete_button_clicked(self):
+        self.deleteBooking()
+        self.clear_deleted_information()
+
+    def clear_deleted_information(self):
+        self.search_travel_id_text.clear()
         self.travel_Id.clear()
         self.pickup_date_information.clear()
         self.Time_of_pickup_information.clear()
@@ -54,87 +130,51 @@ class administration_dashboard(object):
         self.Address_of_dropoff_information.clear()
         self.payment_information.clear()
         self.status_information.clear()
-        self.updated__confirmation_message()
+        self.search_travel_id_text.text()
+        # self.delete_information()
 
+    def update_booking(self):
 
-    def clear_text(self):
+        # try:
+
+        pointer.execute(
+            'UPDATE Booking SET TravelID = ?, PickupDate = ?, PickupTime = ?, PickupAddress = ?, DropAddress = ?, PaymentInformation = ?, Status = ? WHERE TravelID = ?',
+
+            (
+                self.travel_Id.text(),
+                self.pickup_date_information.text(),
+                self.Time_of_pickup_information.text(),
+                self.Address_of_pickup_information.text(),
+                self.Address_of_dropoff_information.text(),
+                self.payment_information.text(),
+                self.status_information.text(),
+                self.search_travel_id_text.text()
+            )
+        )
+
+        join.commit()
+        self.updated_confirmation_message()
+        # except sqlite3.Error as em:
+        #     QMessageBox.critical(self, "DB insertion error", f"Unable to insert data: {em}")
+        # print(f"Error: {em}")
+
+    def updated_confirmation_message(self):
+        QMessageBox.information(self.Word, 'Booking', "Updated Successfully", QMessageBox.StandardButton.Ok)
+
+    def updateBooking_button_clicked(self):
+        self.update_booking()
+        self.clear_updated_information()
+
+    def clear_updated_information(self):
         self.search_travel_id_text.clear()
-
-    def booked_confirmation_message(self):
-        QMessageBox.question(self.Word, 'Booking', "Booked Successfully!!",QMessageBox.Yes | QMessageBox.Yes)
-
-    def updated__confirmation_message(self):
-        QMessageBox.question(self.Word, 'Booking', "Updated Successfully",QMessageBox.Yes | QMessageBox.Yes)
-
-    def obtain_booking_information(self):
-        join.execute("SELECT * FROM Booking WHERE BookingID =:BookingID",
-                  {'BookingID': self.search_travel_id_text.text()})
-
-        return join.fetchall()
-
-    def search_button_clicked(self):
-        pass
-        if self.search_travel_id_text.text() in self.obtain_booking_information().__str__():
-            self.enter_text()
-
-    def enter_text(self):
-        give_it = self.obtain_booking_information()
-
-        print(give_it[0][0])
-        self.travel_Id.setText((give_it[0][0]))
-        self.pickup_date_information.setText((give_it[0][1]))
-        self.Time_of_pickup_information.setText((give_it[0][2]))
-        self.Address_of_pickup_information.setText((give_it[0][3]))
-        self.Address_of_dropoff_information.setText((give_it[0][4]))
-        self.payment_information.setText((give_it[0][5]))
-        self.status_information.setText((give_it[0][6]))
-        self.clear_text()
-
-    def deletebooking(self):
-        join.execute("DELETE FROM Booking WHERE BookingID =:BookingID", {'BookingID': self.travel_Id.text()})
-
-    def clear_deleted_information(self):
         self.travel_Id.clear()
         self.pickup_date_information.clear()
         self.Time_of_pickup_information.clear()
         self.Address_of_pickup_information.clear()
         self.Address_of_dropoff_information.clear()
-        self.Address_of_dropoff_information.clear()
+        self.payment_information.clear()
         self.status_information.clear()
-        self.delete_information()
-
-    def delete_information(self):
-        QMessageBox.question(self.Word, 'Booking', "Deleted Successfully!!", QMessageBox.Yes | QMessageBox.Yes)
-
-    def delete_button_clicked(self):
-        self.deletebooking()
-
-        join.commit()
-        # join.close()
-        self.clear_deleted_information()
-
-    def update_booking(self):
-
-        join.execute(""" UPDATE Booking SET Date = :Date,
-            PickupTime =:PickupTime,
-            PickupAddress =:PickupAddress, DropAddress =:DropAddress,
-            Paid =:Paid,
-            Status =:Status 
-            WHERE BookingID =:BookingID""",
-                     {'BookingID': self.travel_Id.text(),
-                      'Date': self.pickup_date_information.text(),
-                      'PickupTime': self.Time_of_pickup_information.text(),
-                      'PickupAddress': self.Address_of_pickup_information.text(),
-                      'DropAddress': self.Address_of_dropoff_information.text(),
-                      'Paid': self.payment_information.text(),
-                      'Status': self.status_information.text()})
-
-    def updateBooking_button_clicked(self):
-        self.update_booking()
-
-        join.commit()
-        # join.close()
-        self.clear_updated_information()
+        # self.updated_confirmation_message()
 
     def back_button_clicked(self):
         self.closing()
@@ -301,7 +341,8 @@ class administration_dashboard(object):
         self.status_combobox.activated.connect(self.selecting_combobox)
 
         # G Button
-        self.generate_travel_id_button = QtWidgets.QPushButton(mainPage,clicked=lambda: self.generate_travel_id_clicked())
+        self.generate_travel_id_button = QtWidgets.QPushButton(mainPage,
+                                                               clicked=lambda: self.generate_travel_id_clicked())
         self.generate_travel_id_button.setGeometry(QtCore.QRect(30, 173, 120, 20))
         fontstyle = QtGui.QFont()
         fontstyle.setFamily("MS Shell Dlg 2")
@@ -419,7 +460,7 @@ class administration_dashboard(object):
         self.pay_dropdown_box.addItem("")
         self.pay_dropdown_box.addItem("")
         self.pay_dropdown_box.activated.connect(self.select_combobox)
-        self.update_booking()
+        # self.update_booking()
         QtCore.QMetaObject.connectSlotsByName(mainPage)
 
         self.update_text(mainPage)
@@ -428,9 +469,9 @@ class administration_dashboard(object):
     def update_text(self, mainPage):
         update = QtCore.QCoreApplication.translate
 
-        mainPage.setWindowTitle(update("mainPage", "Admin Dashboard"))
+        mainPage.setWindowTitle(update("mainPage", "Admin Booking"))
         self.booking_label.setText(update("mainPage",
-                                          "<html><head/><body><p><span style =\"font-weight:550; font-size:20pt;\">Admin Dashboard</span></p></body></html>"))
+                                          "<html><head/><body><p><span style =\"font-weight:550; font-size:20pt;\">Admin Booking</span></p></body></html>"))
         self.add_button.setText(update("mainPage", "Add"))
         self.back_button.setText(update("mainPage", "Back"))
         self.first_name_label.setText(update("mainPage",
@@ -453,6 +494,8 @@ class administration_dashboard(object):
         self.update_button.setText(update("mainPage", "Update"))
         self.pay_dropdown_box.setItemText(0, update("mainPage", "Credit"))
         self.pay_dropdown_box.setItemText(1, update("mainPage", "Debit"))
+
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

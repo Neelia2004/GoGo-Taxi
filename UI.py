@@ -5,7 +5,7 @@ import customer_login_Ui
 import administration_login
 import driver_loginUi
 
-class Taxi_Main_Page_Ui(object):
+class Taxi_Main_Page_Ui(QtWidgets.QDialog):
     def __init__(self, Word):
         super().__init__()
         self.Word = Word
@@ -20,10 +20,11 @@ class Taxi_Main_Page_Ui(object):
 
 # clicking the customer button
     def customer_button_clicked(self):
-        self.Word = QtWidgets.QDialog()
-        customer_page = customer_login_Ui.Customer_Login_Ui(QtWidgets.QDialog)
-        customer_page.showing()
         self.closing()
+        self.Word = QtWidgets.QDialog()
+        customer_page = customer_login_Ui.Customer_Login_Ui(QtWidgets.QDialog())
+        customer_page.showing()
+
 
 # clicking admin button
     def admin_button_clicked(self):

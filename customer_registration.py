@@ -10,7 +10,7 @@ import customer_login_Ui
 join = sqlite3.connect('C:\\Users\\Aneelia Balraj\\Downloads\\taxi.db')
 pointer = join.cursor()
 
-class customer_registration_Ui(QtWidgets.QDialog):
+class customer_registration_Ui(object):
 
     def __init__(self, Word):
         super().__init__()

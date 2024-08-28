@@ -9,7 +9,7 @@ import customer_login_Ui
 join = sqlite3.connect('C:\\Users\\Aneelia Balraj\\Downloads\\taxi.db')
 pointer = join.cursor()
 
-class cutomer_booking_dashboard_Ui(QtWidgets.QDialog):
+class cutomer_booking_dashboard_Ui(object):
     def __init__(self, Word):
         super().__init__()
         self.Word = Word
@@ -61,7 +61,6 @@ class cutomer_booking_dashboard_Ui(QtWidgets.QDialog):
         self.Address_of_dropoff_information.clear()
         self.payment_information.clear()
         self.status_information.clear()
-        # self.booked_confirmation_message()
 
     def clear_text(self):
         self.search_travel_id_text.clear()
