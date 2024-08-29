@@ -29,7 +29,8 @@ class customer_booking_dashboard_Ui(object):
     # Inserting data into the database
     def enter_booking_data(self):
             pointer.execute(
-                "INSERT INTO Booking (TravelID, PickupDate, PickupTime, PickupAddress, DropAddress, PaymentInformation, Status) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO Booking (TravelID, PickupDate, PickupTime, PickupAddress, DropAddress,"
+                     "PaymentInformation, Status) VALUES (?, ?, ?, ?, ?, ?, ?)",
     (
                 self.travel_Id.text(),
                 self.pickup_date_information.text(),
@@ -51,7 +52,7 @@ class customer_booking_dashboard_Ui(object):
 
     # Display successful booking message
     def booked_confirmation_message(self):
-        QMessageBox.information(self, 'Booking', "Booked Successfully!!", QMessageBox.StandardButton.Ok)
+        QMessageBox.information(self.Word, 'Booking', "Booked Successfully!!", QMessageBox.StandardButton.Ok)
 
     # Clear populated fields
     def clear_information(self):
@@ -69,7 +70,8 @@ class customer_booking_dashboard_Ui(object):
 
     # Pulling information from the database
     def obtain_booking_information(self):
-            pointer.execute('SELECT TravelID, PickupDate, PickupTime, PickupAddress, DropAddress, PaymentInformation, Status FROM Booking WHERE TravelID = ?',
+            pointer.execute('SELECT TravelID, PickupDate, PickupTime, PickupAddress, DropAddress, PaymentInformation,'
+                            ' Status FROM Booking WHERE TravelID = ?',
                   (self.search_travel_id_text .text(),))
 
             return pointer.fetchall()
@@ -82,7 +84,8 @@ class customer_booking_dashboard_Ui(object):
             self.enter_text(booking_details)
 
         else:
-            QMessageBox.warning(self, "Search", "No booking with the respective Travel ID was found", QMessageBox.StandardButton.Ok)
+            QMessageBox.warning(self.Word, "Search", "No booking with the respective Travel ID was found",
+                                QMessageBox.StandardButton.Ok)
             self.clear_text()
 
     # Selecting fields to populate
@@ -126,13 +129,12 @@ class customer_booking_dashboard_Ui(object):
         self.payment_information.clear()
         self.status_information.clear()
         self.search_travel_id_text.text()
-        # self.delete_information()
 
     # Updating a booking
     def update_booking(self):
             pointer.execute(
-            'UPDATE Booking SET TravelID = ?, PickupDate = ?, PickupTime = ?, PickupAddress = ?, DropAddress = ?, PaymentInformation = ?, Status = ? WHERE TravelID = ?',
-
+            'UPDATE Booking SET TravelID = ?, PickupDate = ?, PickupTime = ?, PickupAddress = ?, DropAddress = ?,'
+            ' PaymentInformation = ?, Status = ? WHERE TravelID = ?',
 
         (
                     self.travel_Id.text(),
@@ -168,7 +170,6 @@ class customer_booking_dashboard_Ui(object):
         self.Address_of_dropoff_information.clear()
         self.payment_information.clear()
         self.status_information.clear()
-        # self.updated_confirmation_message()
 
     # Clicking the back button
     def back_button_clicked(self):
@@ -198,7 +199,6 @@ class customer_booking_dashboard_Ui(object):
         data = self.pay_dropdown_box.currentText()
 
         self.payment_information.setText(data)
-        # self.status_cBox.count()
 
     # Setting up the UI Customer Booking page
     def start_customer_dashboard(self, mainPage):
@@ -282,8 +282,7 @@ class customer_booking_dashboard_Ui(object):
         self.Time_of_pickup_information.setGeometry(QtCore.QRect(160, 240, 200, 20))
         self.Time_of_pickup_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
         self.Time_of_pickup_information.setObjectName("Time_of_pickup_information")
 
         # Address of Pickup area
@@ -291,8 +290,7 @@ class customer_booking_dashboard_Ui(object):
         self.Address_of_pickup_information.setGeometry(QtCore.QRect(160, 270, 200, 20))
         self.Address_of_pickup_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
         self.Address_of_pickup_information.setObjectName("Address_of_pickup_information")
 
         # Username label
@@ -307,8 +305,7 @@ class customer_booking_dashboard_Ui(object):
         self.pickup_date_information.setGeometry(QtCore.QRect(160, 210, 200, 20))
         self.pickup_date_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
         self.pickup_date_information.setObjectName("pickup_date_information")
 
         # Address Label
@@ -322,18 +319,15 @@ class customer_booking_dashboard_Ui(object):
         self.Address_of_dropoff_information.setGeometry(QtCore.QRect(160, 300, 200, 20))
         self.Address_of_dropoff_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
         self.Address_of_dropoff_information.setObjectName("Address_of_dropoff_information")
 
         # Status area
         self.status_information = QtWidgets.QLineEdit(mainPage)
         self.status_information.setGeometry(QtCore.QRect(160, 360, 100, 20))
-        # self.status_Txt.setStyleSheet("background-color:rgb(255, 255, 255)")
         self.status_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
-                                      "color: rgb(56, 56, 56);\n"
-        "background-color: rgb(242, 237, 215);\n"
-        "\n""\n""\n""")
+                                            "color: rgb(56, 56, 56);\n"
+                                            "background-color: rgb(242, 237, 215);")
         self.status_information.setObjectName("status_information")
         self.status_information.setEnabled(False)
 
@@ -349,7 +343,8 @@ class customer_booking_dashboard_Ui(object):
         self.status_combobox.activated.connect(self.selecting_combobox)
 
         # Generate Button
-        self.generate_travel_id_button = QtWidgets.QPushButton(mainPage, clicked=lambda:self.generate_travel_id_clicked())
+        self.generate_travel_id_button = QtWidgets.QPushButton(mainPage, clicked=lambda:
+                                                                self.generate_travel_id_clicked())
         self.generate_travel_id_button.setGeometry(QtCore.QRect(30, 173, 120, 20))
         fontstyle = QtGui.QFont()
         fontstyle.setFamily("MS Shell Dlg 2")
@@ -371,11 +366,7 @@ class customer_booking_dashboard_Ui(object):
         self.travel_Id.setGeometry(QtCore.QRect(160, 173, 120, 20))
         self.travel_Id.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                       "color: rgb(56, 56, 56);\n"
-                                      "background-color: rgb(242, 237, 215);\n"
-                                      "\n"
-                                      "\n"
-                                      "\n"
-                                      "")
+                                      "background-color: rgb(242, 237, 215);")
         self.travel_Id.setObjectName("travel_Id")
         self.travel_Id.setEnabled(False)
 
@@ -410,11 +401,7 @@ class customer_booking_dashboard_Ui(object):
         self.search_travel_id_text.setGeometry(QtCore.QRect(300, 140, 91, 31))
         self.search_travel_id_text.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                               "color: rgb(56, 56, 56);\n"
-                                              "background-color: rgb(242, 237, 215);\n"
-                                              "\n"
-                                              "\n"
-                                              "\n"
-                                              "")
+                                              "background-color: rgb(242, 237, 215);")
         self.search_travel_id_text.setObjectName("search_travel_id_text")
 
         # Delete Button
@@ -458,8 +445,7 @@ class customer_booking_dashboard_Ui(object):
         self.payment_information.setGeometry(QtCore.QRect(160, 330, 100, 20))
         self.payment_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                    "color: rgb(56, 56, 56);\n"
-                                   "background-color: rgb(242, 237, 215);\n"
-                                   "\n""\n""\n""")
+                                   "background-color: rgb(242, 237, 215);")
         self.payment_information.setObjectName("pay_Txt")
         self.payment_information.setEnabled(False)
 
@@ -482,20 +468,26 @@ class customer_booking_dashboard_Ui(object):
         update = QtCore.QCoreApplication.translate
 
         mainPage.setWindowTitle(update("mainPage", "Customer Booking"))
-        self.booking_label.setText(update("mainPage", "<html><head/><body><p><span style =\"font-weight:550; font-size:20pt;\">Customer Booking</span></p></body></html>"))
+        self.booking_label.setText(update("mainPage", "<html><head/><body><p><span style =\"font-weight:550;"
+                                                      "font-size:20pt;\">Customer Booking</span></p></body></html>"))
         self.add_button.setText(update("mainPage", "Add"))
         self.back_button.setText(update("mainPage", "Back"))
-        self.first_name_label.setText(update("mainPage", "<html><head/><body><p><span style =\"font-weight:550; color:#ffffff;\">Pick up Time</span></p></body></html>"))
-        self.last_name_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:550;color:#ffffff;\">Pick up Address</span></p></body></html>"))
-        self.username_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:550; color:#ffffff;\">Pick up Date</span></p></body></html>"))
-        self.address_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:550; color:#ffffff;\">Drop off Address</span></p></body></html>"))
+        self.first_name_label.setText(update("mainPage", "<html><head/><body><p><span style =\"font-weight:550;"
+                                                         "color:#ffffff;\">Pick up Time</span></p></body></html>"))
+        self.last_name_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:550;"
+                                                        "color:#ffffff;\">Pick up Address</span></p></body></html>"))
+        self.username_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:550;"
+                                                       "color:#ffffff;\">Pick up Date</span></p></body></html>"))
+        self.address_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:550;"
+                                                      " color:#ffffff;\">Drop off Address</span></p></body></html>"))
         self.status_combobox.setItemText(0, update("mainPage", "Status"))
         self.status_combobox.setItemText(1, update("mainPage", "Active"))
         self.status_combobox.setItemText(2, update("mainPage", "Completed"))
         self.status_combobox.setItemText(3, update("mainPage", "Cancel"))
         self.generate_travel_id_button.setText(update("mainPage", "Get Travel ID"))
         self.search_button.setText(update("mainPage", "Search"))
-        self.travel_id_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:550; color:#ffffff;\">T ID</span></p></body></html>"))
+        self.travel_id_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:550;"
+                                                        " color:#ffffff;\">T ID</span></p></body></html>"))
         self.delete_button.setText(update("mainPage", "Delete"))
         self.update_button.setText(update("mainPage", "Update"))
         self.pay_dropdown_box.setItemText(0, update("mainPage", "Credit"))
@@ -508,15 +500,3 @@ if __name__ == "__main__":
     ui = customer_booking_dashboard_Ui(mainPage)
     ui.showing()
     sys.exit(app.exec())
-
-
-
-
-
-
-
-
-
-
-
-

@@ -38,14 +38,16 @@ class admin_login_window(object):
 
     # Pulling information from the database
     def obtain_information(self):
-        pointer.execute("SELECT * FROM Admin WHERE password =:password",
-                  {'password': self.password_information.text()})
+        pointer.execute('SELECT * FROM Admin WHERE password = ?',
+                        (self.password_information.text(),))
 
         return pointer.fetchall()
 
     # Login error message
     def error_message_login(self):
-        ret = QMessageBox.warning(self.Word, 'Forgot Password', "Invalid Email and/or Password?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel,         QMessageBox.StandardButton.Cancel)
+        ret = QMessageBox.warning(self.Word, 'Forgot Password', "Invalid Email and/or Password?",
+                                  QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel,
+                                  QMessageBox.StandardButton.Cancel)
 
         if ret == QMessageBox.StandardButton.Yes:
             print("Yes was clicked")
@@ -88,7 +90,8 @@ class admin_login_window(object):
         self.administration_login_label.setObjectName("administration_login_label")
 
         # Administration login button
-        self.administration_login_button = QtWidgets.QPushButton(mainAdminPage, clicked=lambda: self.admin_button_clicked())
+        self.administration_login_button = QtWidgets.QPushButton(mainAdminPage, clicked=lambda:
+                                                                self.admin_button_clicked())
         self.administration_login_button.setGeometry(QtCore.QRect(150, 330, 113, 32))
         fontstyle = QtGui.QFont()
         fontstyle.setPointSize(18)
@@ -105,8 +108,7 @@ class admin_login_window(object):
         self.password_information = QtWidgets.QLineEdit(mainAdminPage)
         self.password_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
         self.password_information.setGeometry(QtCore.QRect(110, 270, 200, 20))
         self.password_information.setObjectName("password_information")
 
@@ -130,8 +132,7 @@ class admin_login_window(object):
         self.email_Information = QtWidgets.QLineEdit(mainAdminPage)
         self.email_Information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
         self.email_Information.setGeometry(QtCore.QRect(110, 210, 200, 20))
         self.email_Information.setObjectName("email_Information")
 
@@ -176,10 +177,13 @@ class admin_login_window(object):
         update = QtCore.QCoreApplication.translate
 
         mainAdminPage.setWindowTitle(update("mainAdminPage", "Admin Login"))
-        self.administration_login_label.setText(update("mainAdminPage", "<html><head/><body><p><span style =\" font-size:35pt;\">Admin Login</span></p></body></html>"))
+        self.administration_login_label.setText(update("mainAdminPage",
+        "<html><head/><body><p><span style =\" font-size:35pt;\">Admin Login</span></p></body></html>"))
         self.administration_login_button.setText(update("mainAdminPage", "Login"))
-        self.emailLabel.setText(update("mainAdminPage", "<html><head/><body><p><span style =\" font-weight:600; color:#ffffff;\">Username</span></p></body></html>"))
-        self.passwordLabel.setText(update("mainAdminPage", "<html><head/><body><p><span style =\" font-weight:600; color:#ffffff;\">Password</span></p></body></html>"))
+        self.emailLabel.setText(update("mainAdminPage",
+        "<html><head/><body><p><span style =\" font-weight:600; color:#ffffff;\">User ID</span></p></body></html>"))
+        self.passwordLabel.setText(update("mainAdminPage",
+        "<html><head/><body><p><span style =\" font-weight:600; color:#ffffff;\">Password</span></p></body></html>"))
         self.forget_password_button.setText(update("mainAdminPage", "Forget Password"))
         self.Back_Button.setText(update("mainAdminPage", "Back"))
 

@@ -38,8 +38,8 @@ class Driver_Login_Ui(object):
 
     # Pulling information from the database
     def obtain_information(self):
-        pointer.execute("SELECT * FROM TaxiDriver WHERE password =:password",
-                  {'password': self.password_details.text()})
+        pointer.execute('SELECT * FROM TaxiDriver WHERE password = ?',
+                        (self.password_details.text(),))
 
         return pointer.fetchall()
 
@@ -123,8 +123,7 @@ class Driver_Login_Ui(object):
         self.password_details = QtWidgets.QLineEdit(mainPage)
         self.password_details.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);n")
         self.password_details.setGeometry(QtCore.QRect(110, 270, 200, 20))
         self.password_details.setObjectName("password_details")
 
@@ -133,8 +132,7 @@ class Driver_Login_Ui(object):
         # Password label
         self.password_label = QtWidgets.QLabel(mainPage)
         self.password_label.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
-                                    "color: rgb(56, 56, 56);\n"
-                                    "")
+                                    "color: rgb(56, 56, 56);")
         self.password_label.setGeometry(QtCore.QRect(110, 240, 80, 30))
         self.password_label.setObjectName("password_label")
 
@@ -149,8 +147,7 @@ class Driver_Login_Ui(object):
         self.username_details = QtWidgets.QLineEdit(mainPage)
         self.username_details.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
         self.username_details.setGeometry(QtCore.QRect(110, 210, 200, 20))
         self.username_details.setObjectName("username_details")
 
@@ -176,12 +173,15 @@ class Driver_Login_Ui(object):
             update = QtCore.QCoreApplication.translate
 
             mainPage.setWindowTitle(update("mainPage", "Driver Login"))
-            self.driver_login_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-size:35pt;\">Driver Login</span></p></body></html>"))
+            self.driver_login_label.setText(update("mainPage", "<html><head/><body><p>"
+                                "<span style =\" font-size:35pt;\">Driver Login</span></p></body></html>"))
             self.forget_password_button.setText(update("mainPage", "Forget Password"))
             self.driver_login_button.setText(update("mainPage", "Login"))
             self.back_button.setText(update("mainPage", "Back"))
-            self.dusername_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:600; color:#ffffff;\">Username</span></p></body></html>"))
-            self.password_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:600; color:#ffffff;\">Password</span></p></body></html>"))
+            self.dusername_label.setText(update("mainPage", "<html><head/><body><p>"
+                                "<span style =\" font-weight:600; color:#ffffff;\">User ID</span></p></body></html>"))
+            self.password_label.setText(update("mainPage", "<html><head/><body><p>"
+                                "<span style =\" font-weight:600; color:#ffffff;\">Password</span></p></body></html>"))
 
 # Creating the entry point of the application
 if __name__ == "__main__":

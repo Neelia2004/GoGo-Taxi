@@ -39,8 +39,8 @@ class Customer_Login_Ui(object):
 
     # Pulling information from the database
     def obtain_information(self):
-        pointer.execute("SELECT * FROM Customer WHERE password =:password",
-                  {'password': self.password_information.text()})
+        pointer.execute('SELECT * FROM Customer WHERE password = ?',
+                        (self.password_information.text(),))
 
         return pointer.fetchall()
 
@@ -99,7 +99,8 @@ class Customer_Login_Ui(object):
         self.customer_login_label.setObjectName("customer_login_label")
 
         # Customer login button
-        self.customer_login_button = QtWidgets.QPushButton(mainPage, clicked=lambda: self.customer_login_button_clicked())
+        self.customer_login_button = QtWidgets.QPushButton(mainPage, clicked=lambda:
+                                                            self.customer_login_button_clicked())
         self.customer_login_button.setGeometry(QtCore.QRect(150, 315, 113, 32))
         fontstyle = QtGui.QFont()
         fontstyle.setPointSize(18)
@@ -131,8 +132,7 @@ class Customer_Login_Ui(object):
         self.password_information = QtWidgets.QLineEdit(mainPage)
         self.password_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
         self.password_information.setGeometry(QtCore.QRect(110, 270, 200, 20))
         self.password_information.setObjectName("password_information")
 
@@ -142,8 +142,7 @@ class Customer_Login_Ui(object):
         # Password label
         self.password_label = QtWidgets.QLabel(mainPage)
         self.password_label.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
-                                          "color: rgb(56, 56, 56);\n"
-                                          "")
+                                          "color: rgb(56, 56, 56);\n" "")
         self.password_label.setGeometry(QtCore.QRect(110, 240, 80, 30))
         self.password_label.setObjectName("password_label")
 
@@ -158,8 +157,7 @@ class Customer_Login_Ui(object):
         self.username_details = QtWidgets.QLineEdit(mainPage)
         self.username_details.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
         self.username_details.setGeometry(QtCore.QRect(110, 210, 200, 20))
         self.username_details.setObjectName("username_details")
 
@@ -203,13 +201,16 @@ class Customer_Login_Ui(object):
 
             mainPage.setWindowTitle(update("mainPage", "Customer Login"))
             self.customer_login_label.setText(update("mainPage",
-                                                   "<html><head/><body><p><span style =\" font-size:30pt;\">Customer Login</span></p></body></html>"))
+                                                   "<html><head/><body><p><span style =\" font-size:30pt;\""
+                                                   ">Customer Login</span></p></body></html>"))
             self.customer_login_button.setText(update("mainPage", "Login"))
             self.back_button.setText(update("mainPage", "Back"))
             self.cusername_label.setText(update("mainPage",
-                                                "<html><head/><body><p><span style =\" font-weight:600; color:#ffffff;\">Username</span></p></body></html>"))
+                                                "<html><head/><body><p><span style =\" font-weight:600;" 
+                                                "color:#ffffff;\">User ID</span></p></body></html>"))
             self.password_label.setText(update("mainPage",
-                                               "<html><head/><body><p><span style =\" font-weight:600; color:#ffffff;\">Password</span></p></body></html>"))
+                                               "<html><head/><body><p><span style =\" font-weight:600;"
+                                                "color:#ffffff;\">Password</span></p></body></html>"))
             self.forget_password_button.setText(update("mainPage", "Forget Password"))
 
             self.register_button.setText(update("mainPage", "Register"))

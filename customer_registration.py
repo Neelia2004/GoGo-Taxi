@@ -28,7 +28,8 @@ class customer_registration_Ui(object):
     # Inserting data into the database
     def enter_registration_data(self):
             pointer.execute(
-            "INSERT INTO Customer (CustomerID, Password, FirstName, LastName, Address,  Email, ContactNumber, PaymentMethod, Ccnumber ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO Customer (CustomerID, Password, FirstName, LastName, Address,  Email, ContactNumber,"
+                     "PaymentMethod, Ccnumber ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
     (
                     self.username_information.text(),
                     self.password_information.text(),
@@ -53,7 +54,7 @@ class customer_registration_Ui(object):
 
     # Display successful registration message
     def successful_register_message(self):
-        QMessageBox.information(self, 'Registration', "Successfully Registered", QMessageBox.StandardButton.Ok)
+        QMessageBox.information(self.Word, 'Registration', "Successfully Registered", QMessageBox.StandardButton.Ok)
 
     # Clear populated fields
     def clear_information(self):
@@ -156,8 +157,7 @@ class customer_registration_Ui(object):
         self.password_information.setGeometry(QtCore.QRect(160, 142, 200, 20))
         self.password_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n""")
+                                                "background-color: rgb(242, 237, 215);")
         self.password_information.setObjectName("password_information")
 
         # Customer username label
@@ -172,8 +172,7 @@ class customer_registration_Ui(object):
         self.username_information.setGeometry(QtCore.QRect(160, 110, 200, 20))
         self.username_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
         self.username_information.setObjectName("username_information")
 
         # First name label
@@ -188,8 +187,7 @@ class customer_registration_Ui(object):
         self.f_name_information.setGeometry(QtCore.QRect(160, 175, 200, 20))
         self.f_name_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
         self.f_name_information.setObjectName("f_name_information")
 
         # Last name label
@@ -204,8 +202,7 @@ class customer_registration_Ui(object):
         self.l_name_information.setGeometry(QtCore.QRect(160, 207, 200, 20))
         self.l_name_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
 
         # Address label
         self.address_label = QtWidgets.QLabel(mainPage)
@@ -219,8 +216,7 @@ class customer_registration_Ui(object):
         self.address_information.setGeometry(QtCore.QRect(160, 237, 200, 20))
         self.address_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
 
         # Email label
         self.email_label = QtWidgets.QLabel(mainPage)
@@ -234,8 +230,7 @@ class customer_registration_Ui(object):
         self.email_information.setGeometry(QtCore.QRect(160, 268, 200, 20))
         self.email_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
         self.email_information.setObjectName("email_information")
 
         # Phone number label
@@ -250,8 +245,7 @@ class customer_registration_Ui(object):
         self.phoneno_information.setGeometry(QtCore.QRect(160, 300, 200, 20))
         self.phoneno_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
         self.phoneno_information.setObjectName("phoneno_information")
 
         # Payment information area
@@ -259,8 +253,7 @@ class customer_registration_Ui(object):
         self.payment_information.setGeometry(QtCore.QRect(160, 332, 100, 20))
         self.payment_information.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n""")
+                                                "background-color: rgb(242, 237, 215);")
         self.payment_information.setObjectName("payment_information")
         self.payment_information.setEnabled(False)
 
@@ -269,8 +262,7 @@ class customer_registration_Ui(object):
         self.payment_information2.setGeometry(QtCore.QRect(260, 332, 100, 20))
         self.payment_information2.setStyleSheet("font: 12pt \"Microsoft Sans Serif\";\n"
                                                 "color: rgb(56, 56, 56);\n"
-                                                "background-color: rgb(242, 237, 215);\n"
-                                                "\n""\n""\n")
+                                                "background-color: rgb(242, 237, 215);")
         self.payment_information2.setObjectName("payment_information2")
 
         # Payment information dropdown box
@@ -288,15 +280,24 @@ class customer_registration_Ui(object):
     def update_text(self, mainPage):
         update = QtCore.QCoreApplication.translate
         mainPage.setWindowTitle(update("mainPage", "Customer Registration"))
-        self.label_registration.setText(update("mainPage", "<html><head/><body><p><span style =\"font-weight:550; font-size:20pt;\">Customer Registration</span></p></body></html>"))
-        self.password_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:550; color:#ffffff;\">Password</span></p></body></html>"))
-        self.username_label.setText(update("mainPage", "<html><head/><body><p><span style =\"font-weight:550;color:#ffffff\">Username</span></p></body></html>"))
-        self.f_name_label.setText(update("mainPage", "<html><head/><body><p><span style =\"font-weight:550; color:#ffffff;\">First Name</span></p></body></html>>"))
-        self.l_name_label.setText(update("mainPage", "<html><head/><body><p><span style =\"font-weight:550; color:#ffffff;\">Last Name</span></p></body></html>"))
-        self.address_label.setText(update("mainPage", "<html><head/><body><p><span style =\"font-weight:550; color:#ffffff;\">Address</span></p></body></html>"))
-        self.email_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:550;color:#ffffff;\">Email</span></p></body></html>"))
-        self.phoneno_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:550; color:#ffffff;\">Phone No</span></p></body></html>"))
-        self.address_label.setText(update("mainPage", "<html><head/><body><p><span style =\" font-weight:550; color:#ffffff;\">Address</span></p></body></html>"))
+        self.label_registration.setText(update("mainPage", "<html><head/><body><p>"
+                    "<span style =\"font-weight:550; font-size:20pt;\">Customer Registration</span></p></body></html>"))
+        self.password_label.setText(update("mainPage", "<html><head/><body><p>"
+                    "<span style =\" font-weight:550; color:#ffffff;\">Password</span></p></body></html>"))
+        self.username_label.setText(update("mainPage", "<html><head/><body><p>"
+                    "<span style =\"font-weight:550;color:#ffffff\">Username</span></p></body></html>"))
+        self.f_name_label.setText(update("mainPage", "<html><head/><body><p>"
+                    "<span style =\"font-weight:550; color:#ffffff;\">First Name</span></p></body></html>>"))
+        self.l_name_label.setText(update("mainPage", "<html><head/><body><p>"
+                    "<span style =\"font-weight:550; color:#ffffff;\">Last Name</span></p></body></html>"))
+        self.address_label.setText(update("mainPage", "<html><head/><body><p>"
+                    "<span style =\"font-weight:550; color:#ffffff;\">Address</span></p></body></html>"))
+        self.email_label.setText(update("mainPage", "<html><head/><body><p>"
+                    "<span style =\" font-weight:550;color:#ffffff;\">Email</span></p></body></html>"))
+        self.phoneno_label.setText(update("mainPage", "<html><head/><body><p>"
+                    "<span style =\" font-weight:550; color:#ffffff;\">Phone No</span></p></body></html>"))
+        self.address_label.setText(update("mainPage", "<html><head/><body><p>" 
+                    "<span style =\" font-weight:550; color:#ffffff;\">Address</span></p></body></html>"))
         self.back_button.setText(update("mainPage", "Back"))
         self.submit_button.setText(update("mainPage", "Register"))
         self.pay_dropdown_box.setItemText(0, update("mainPage", "Credit"))
